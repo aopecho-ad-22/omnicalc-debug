@@ -1,6 +1,6 @@
 class MeteorologistController < ApplicationController
   def street_to_weather
-    @street_address = params.fetch("address")
+    @street_address = params.fetch("street_address")
     
     maps_key = ENV.fetch("GEOCODING_API_KEY")
 
@@ -8,9 +8,10 @@ class MeteorologistController < ApplicationController
 
     api_response = open(url).read
 
-    parsed_data = JSON.parse(api_response)
+    @parsed_data = JSON.parse(@api_response)
 
-    first_result = parsed_data.fetch("results").at(0)
+    @first_result = @parsed_data.fetch("results").at(0)
+=begin
     location = first_result.fetch("geometry").fetch("location")
 
     @lat = location.fetch("lat").to_s
@@ -38,7 +39,7 @@ class MeteorologistController < ApplicationController
     @summary_of_next_several_hours = results.fetch("hourly").fetch("summary")
 
     @summary_of_next_several_days = results.fetch("daily").fetch("summary")
-
+=end
     render({ :template => "meteorologist_templates/street_to_weather_results.html.erb"})
   end
 
